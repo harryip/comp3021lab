@@ -1,8 +1,10 @@
 package base;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
 
-public class Folder {
+public class Folder implements Comparable<Folder> {
 	private ArrayList<Note> notes;
 	private String name;
 	
@@ -55,4 +57,49 @@ public class Folder {
 		
 		return name + ":" + nText + ":" + nImage;
 	}
+	public int compareTo(Folder o){
+		if(this.name.compareTo(o.name) == 0) return 0;
+		if(this.name.compareTo(o.name) > 0) return 1;
+		else return -1;
+	}
+	public void sortNotes(){
+		Collections.sort(notes);	
+	}
+	public List<Note> searchNotes(String keywords){
+		String[] karray = keywords.split(" ");
+		List<Note> snote = new ArrayList<Note>();
+		for (Note note : this.notes){
+			boolean Flag=true;
+			int i=0;
+			while((i<karray.length)&&(Flag)){
+				Flag=false;
+				if(note instanceof TextNote)
+				{
+					do{
+						if (karray[i].equalsIgnoreCase("or"))
+						i++;
+						if ((note.getTitle().toLowerCase().indexOf(karray[i].toLowerCase())>=0)||(((TextNote) note).content.toLowerCase().indexOf(karray[i].toLowerCase())>=0))
+						{Flag=true;}
+						i++;
+					} while ((i<karray.length)&&(karray[i].equalsIgnoreCase("or")));
+				
+				}else {
+					do {
+						if (karray[i].equalsIgnoreCase("or"))
+						i++;
+						if ((note.getTitle().toLowerCase().indexOf(karray[i].toLowerCase())>=0))
+						{Flag=true;}
+						i++;
+					} while ((i<karray.length)&&(karray[i].equalsIgnoreCase("or")));
+					
+				}
+				
+			}
+			if (Flag)
+				snote.add(note);
+		}
+		return snote;
+	}
+
+
 }

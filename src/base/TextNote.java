@@ -94,4 +94,7 @@ public class TextNote extends Note {
 		
 		return r;
 	}
+	public void changeContent(String content){
+		 		this.content=content;
+		 	}
 }

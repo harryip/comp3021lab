@@ -32,31 +32,40 @@ public class FindMax {
 
 	public void printMax() {
 		
+
 	    ExecutorService executor = Executors.newFixedThreadPool(3);
+	    int[] maxt = new int[3];
 	    
 	    executor.execute(new Thread(){
 	    	public void run(){
 	    		int max = findMax(0,29);
-	    		System.out.println("the max value between 0 to 29 is " + max);
+	    		maxt[0] = max;
 	    	}
 	    });
 
 	    executor.execute(new Thread(){
 	    	public void run(){
 	    		int max = findMax(30,59);
-	    		System.out.println("the max value between 30 to 59 is " + max);
+	    		maxt[1] = max;
 	    	}
 	    });
 	    
 	    executor.execute(new Thread(){
 	    	public void run(){
 	    		int max = findMax(60,89);
-	    		System.out.println("the max value between 60 to 89 is " + max);
+	    		maxt[2] = max;
 	    	}
 	    });
 	    
 	    executor.shutdown();
-
+	    
+	    int max = maxt[0];
+		for (int i = 1; i <= 2; i++) {
+			if (maxt[i] > max) {
+				max = maxt[i];
+			}
+		}
+		System.out.println("Max value = " + max);
 	}
 
 	/**
